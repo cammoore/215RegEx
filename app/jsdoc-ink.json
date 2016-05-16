@@ -1,0 +1,41 @@
+/* Not currently using ink-docstrap, but keeping the config file around in case I switch back to it. */
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "logoFile": "",
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "dateFormat": "ddd MMM Do YYYY",
+    "outputSourceFiles": true,
+    "outputSourcePath": true,
+    "systemName": "ICS 215 Meteor App",
+    "footer": "",
+    "copyright": "",
+    "navType": "vertical",
+    "theme": "spacelab",
+    "linenums": true,
+    "collapseSymbols": true,
+    "inverseNav": false,
+    "protocol": "html://",
+    "methodHeadingReturns": false
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true
+  },
+  "source": {
+    "exclude": [
+      ".git",
+      ".meteor",
+      "node_modules"
+    ],
+    "includePattern": ".+\\.js(x|doc)?$"
+  },
+  "opts": {
+    "recurse" : true,
+    "destination": "../../ics215-m-gh-pages/"
+  }
+}
