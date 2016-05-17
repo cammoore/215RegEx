@@ -137,8 +137,8 @@ class SmartField {
     this.textbox.style.width = '';
     const scrollWidth = this.textbox.scrollWidth;
     const offsetWidth = this.textbox.offsetWidth;
-
-    this.textbox.style.width = (scrollWidth === offsetWidth ? offsetWidth - 1 : scrollWidth + 8) + 'px';
+    const width = (scrollWidth === offsetWidth ? offsetWidth - 1 : scrollWidth + 8);
+    this.textbox.style.width = `${width}px`;
 
     /* Set the height of the absolute-positioned textarea to its background content's offsetHeight. Since the background
      content autoexpands, this allows the elements to be scrolled simultaneously using the parent element's scrollbars.
@@ -147,7 +147,8 @@ class SmartField {
      background content (which is done outside this method) before testing its height. Comparing bg.offsetHeight to the
      container's offsetHeight (minus 2 for borders) is done for the sake of IE6, since CSS min-height doesn't work
      there. */
-    this.textbox.style.height = Math.max(this.bg.offsetHeight, this.field.offsetHeight - 2) + 'px';
+    const height = Math.max(this.bg.offsetHeight, this.field.offsetHeight - 2);
+    this.textbox.style.height = `${height}px`;
   }
 
   /**
@@ -187,8 +188,8 @@ class SmartField {
    */
   _onKeyUp(e) {
     const evt = e || event;
-    // console.log(`keyUp: ${evt}`);
-    const srcEl = evt.srcElement || evt.target;
+    console.log(`keyUp: ${evt}`);
+    // const srcEl = evt.srcElement || evt.target;
     this._keydownCount = 0; // Reset
     if (this._matchOnKeyUp) {
       this._matchOnKeyUp = false; // Reset
