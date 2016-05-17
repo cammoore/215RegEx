@@ -1,1 +1,23 @@
 /* CSS declarations go here */
+#search                     {height:60px; width:99.75%;}
+#input                      {height:175px; width:99.75%; margin-top:10px;}
+.smartField                 {position:relative; overflow:auto; border:1px solid #ccc; background:#f9f9f9;}
+.smartField pre,
+.smartField textarea        {font:100% "courier new",monospace; width:100%;}
+.smartField pre             {z-index:1; color:#f9f9f9; border:none; padding: 0px;}
+.smartField textarea        {z-index:2; margin-left:-1px; border:0; background:transparent; position:absolute; top:0; height:100%; min-height:100%; overflow:hidden;}
+
+/* Highlighting ------------------------------------- */
+b, i, u       {font-weight:normal; font-style:normal; text-decoration:none;}
+#input b      {background:#fff000; color:#fff000;}
+#input i      {background:#80c0ff; color:#80c0ff;}
+#search b     {background:#aad1f7; color:#aad1f7;}
+#search i     {background:#f9ca69; color:#f9ca69;}
+#search i b   {background:#f7a700; color:#f7a700;}
+#search i u   {background:#efba4a; color:#efba4a;}
+#search b.g1  {background:#d2f854; color:#d2f854;}
+#search b.g2  {background:#9ec70c; color:#9ec70c;}
+#search b.g3  {background:#ecc9f7; color:#ecc9f7;}
+#search b.g4  {background:#54b70b; color:#54b70b;}
+#search b.g5  {background:#b688cf; color:#b688cf;}
+#search b.err {background:#ff4300 !important; color:#ff4300 !important;}

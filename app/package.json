@@ -5,22 +5,25 @@
     "start": "meteor run",
     "lint": "eslint .",
     "test": "meteor test --driver-package practicalmeteor:mocha --port 3100",
-    "test-watch": "meteor test --driver-package practicalmeteor:mocha --port 3100",
-    "jsdoc": "./node_modules/.bin/jsdoc -c ./jsdoc.json -R ../README.md -r ."
+    "jsdoc": "./node_modules/.bin/jsdoc -c ./jsdoc.json -R ../README.md -r .",
+    "jsdoc-ink": "./node_modules/.bin/jsdoc -c ./jsdoc-ink.json -t ./node_modules/ink-docstrap/template -R ../README.md -r ."
   },
   "dependencies": {
-    "meteor-node-stubs": "~0.2.0"
+    "bootstrap": "^3.3.6",
+    "dotenv": "^2.0.0",
+    "highcharts": "^4.2.5",
+    "meteor-node-stubs": "~0.2.0",
+    "moment": "^2.13.0",
+    "xregexp": "^3.1.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "docdash": "^0.3.0",
     "es6-enum": "^1.0.3",
-    "eslint": "^2.10.2",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.6.1",
-    "eslint-plugin-jsx-a11y": "^1.0.4",
-    "eslint-plugin-meteor": "^3.5.2",
-    "eslint-plugin-react": "^5.1.1",
+    "eslint": "^2.7.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "eslint-plugin-jsx-a11y": "^0.6.2",
+    "eslint-plugin-meteor": "^3.4.0",
+    "eslint-plugin-react": "^4.3.0",
     "ink-docstrap": "^1.1.4",
     "jsdoc": "^3.4.0"
   },

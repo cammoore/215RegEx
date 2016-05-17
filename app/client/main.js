@@ -1,3 +1,2 @@
-import '../imports/startup/client';
+import '/imports/startup/client';
 import './main.css';
-import './main.html';
