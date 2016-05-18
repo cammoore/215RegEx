@@ -27,6 +27,7 @@
  */
 
 import { Template } from 'meteor/templating';
+import RegexPage from '/imports/api/regex/RegexPage';
 import SmartField from '/imports/api/field/SmartField';
 import './regexTest.html';
 
@@ -44,7 +45,9 @@ Template.regexTest.onCreated(function () {
 
 Template.regexTest.onRendered(function () {
   // add your statement here
-  const search = new SmartField('search');
+  // const search = new SmartField('search');
+  // const input = new SmartField('input');
+  const page = new RegexPage();
   // console.log(search);
 });
 

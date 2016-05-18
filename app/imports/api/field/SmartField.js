@@ -32,8 +32,8 @@
  * SmartFields wrap a textarea. This is my attempt at reproducing Steven Levithan's <http://stevenlevithan.com>
  * RegexPal in meteor. From the original:
  *  "SmartField is my name for the rich text boxes RegexPal creates, which
- are essentially <div> container elements enclosing <textarea> elements
- on top of <pre> elements, combined with some CSS and JavaScript to
+ are essentially &lt;div&gt; container elements enclosing &lt;textarea&gt; elements
+ on top of &lt;pre&gt; elements, combined with some CSS and JavaScript to
  facilitate seemless scrolling (the only scrollbar actually belongs to the
  container). The code for smart fields is occasionally browser-specific
  and is extremely hacky in general. However, it offers major speed
@@ -43,8 +43,8 @@
 class SmartField {
 
   /**
-   * Creates a new SmartField around the el, textarea.
-   * @param {Object} el the element a textarea.
+   * Creates a new SmartField around the element or element Id. It should be a &lt;div&gt; with a textarea inside it.
+   * @param {Object} el the element or element Id with a textarea.
    */
   constructor(el) {
     this._el = this._foobar(el);
@@ -54,28 +54,6 @@ class SmartField {
       this._textboxEl.id = `${this._el.id}Text`;
       this._bgEl.id = `${this._el.id}Bg`;
       this._el.insertBefore(this._bgEl, this._textboxEl);
-
-      this._textboxEl.onkeydown = (e) => {
-        this._onKeyDown(e);
-      };
-      this._textboxEl.onkeyup = (e) => {
-        this._onKeyUp(e);
-      };
-
-      this._keydownCount = 0;
-      this._matchOnKeyUp = false;
-      /* Killed key codes:
-       16:  shift          17:  ctrl           18:  alt            19:  pause          20:  caps lock
-       27:  escape         33:  page up        34:  page down      35:  end            36:  home
-       37:  left           38:  up             39:  right          40:  down           44:  print screen
-       45:  insert         112: f1             113: f2             114: f3             115: f4
-       116: f5             117: f6             118: f7             119: f8             120: f9
-       121: f10            122: f11            123: f12            144: num lock       145: scroll lock
-       These could be included, but Opera handles them incorrectly:
-       91:  Windows (Opera reports both the Windows key and "[" as 91.)
-       93:  context menu (Opera reports the context menu key as 0, and "]" as 93.) */
-      this._deadKeys = [16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 44, 45, 112, 113, 114, 115, 116, 117,
-        118, 119, 120, 121, 122, 123, 144, 145];
       this.field = this._el;
       this.textbox = this._textboxEl;
       this.bg = this._bgEl;
@@ -86,6 +64,19 @@ class SmartField {
     }
   }
 
+  /**
+   * Gets the inner textarea so we can attach listeners to it.
+   * @returns {*|null}
+   */
+  getTextarea() {
+    return this.textbox;
+  }
+  
+
+  /**
+   * Sets the background HTML.
+   * @param html the replacement HTML.
+   */
   setBgHtml(html) {
     // Workaround an IE text-normaliztion bug where a leading newline is removed (causing highlighting to be misaligned)
     // if (isIE) html = html.replace(XRegExp.cache("^\\r\\n"), "\r\n\r\n");
@@ -95,8 +86,14 @@ class SmartField {
     this.setDimensions();
   }
 
-  // This is much faster than simple use of innerHTML in some browsers
-  // See <http://blog.stevenlevithan.com/archives/faster-than-innerhtml>
+  /**
+   * Replaces the HTML in the given element.
+   * This is much faster than simple use of innerHTML in some browsers.
+   * See http://blog.stevenlevithan.com/archives/faster-than-innerhtml
+   * @param el the element or element Id.
+   * @param html the HTML.
+   * @returns {Node} the modified Node.
+   */
   replaceHtml(el, html) {
     // console.log("replaceHtml(" + el + ", " + html + ")");
     const oldEl = this._foobar(el);
@@ -112,9 +109,14 @@ class SmartField {
     return newEl;
   }
 
-  /* outerHTML is used to work around the fact that IE applies text normalization when using innerHTML,
+  /**
+   * replaceOuterHTML is used to work around the fact that IE applies text normalization when using innerHTML,
    which can cause problems with whitespace, etc. Note that even this approach doesn't work with some
-   elements such as <div>. However, it mostly works with <pre> elements, at least. */
+   elements such as &lt;div&gt;. However, it mostly works with &lt;pre&gt; elements, at least.
+   * @param el the element or element Id.
+   * @param html the replacement HTML.
+   * @returns {Node} the modified Node.
+   */
   replaceOuterHtml(el, html) {
     let varEl = this.replaceHtml(el, '');
     if (varEl.outerHTML) { // If IE
@@ -129,11 +131,14 @@ class SmartField {
     return varEl;
   }
 
+  /**
+   * Sets the dimensions of the SmartField.
+   * Set the width of the textarea to its scrollWidth. Note that although the background content autoexpands, its
+   * offsetWidth isn't dynamically updated as is its offsetHeight (at least in Firefox 2). The pixel adjustments avoid
+   * an unnecessary horizontal scrollbar and keep the last character to the right in view when the container element
+   * has a horizontal scrollbar.
+   */
   setDimensions() {
-    /* Set the width of the textarea to its scrollWidth. Note that although the background content autoexpands, its
-     offsetWidth isn't dynamically updated as is its offsetHeight (at least in Firefox 2). The pixel adjustments avoid
-     an unnecessary horizontal scrollbar and keep the last character to the right in view when the container element
-     has a horizontal scrollbar. */
     this.textbox.style.width = '';
     const scrollWidth = this.textbox.scrollWidth;
     const offsetWidth = this.textbox.offsetWidth;
@@ -166,52 +171,6 @@ class SmartField {
     }
     return false;
   }
-
-  /**
-   * KeyDown event handler.
-   * @param e
-   * @private
-   */
-  _onKeyDown(e) {
-    const evt = e || event;
-    // console.log(`keyDown: ${evt}`);
-    if (!this._filterKeys(evt)) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * KeyUp event handler.
-   * @param e
-   * @private
-   */
-  _onKeyUp(e) {
-    const evt = e || event;
-    console.log(`keyUp: ${evt}`);
-    // const srcEl = evt.srcElement || evt.target;
-    this._keydownCount = 0; // Reset
-    if (this._matchOnKeyUp) {
-      this._matchOnKeyUp = false; // Reset
-      // RegexPal.highlightMatches();
-    }
-  }
-
-  /**
-   *
-   * @param e
-   * @returns {boolean}
-   * @private
-   */
-  _filterKeys(e) {
-    // console.log(`_filterKeys(${e.keyCode})`);
-    // If the user pressed a key which does not change the input, return false to prevent running a match
-    if (this._deadKeys.indexOf(e.keyCode) > -1) {
-      return false;
-    }
-    return true;
-  }
-
 }
 
 export default SmartField;

@@ -394,7 +394,7 @@ function intialize(regexPal) {
               output = output
                   .replace(XRegExp.cache("[<&>]", "g"), "_")
                   .replace(re.matchPair, "<b>$1</b>$2<i>$3</i>");
-
+              
               f.input.setBgHtml(output);
             };
           }(),
